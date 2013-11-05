@@ -1,0 +1,19 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="query">
+      Sort by:
+      <select ng-model="orderProp">
+        <option value="name">Alphabetical</option>
+        <option value="picture_count">Count</option>
+      </select>
+
+    <ul class="tag-list">
+        <li ng-repeat="tag in tags | filter:query | orderBy:orderProp"><a href="#/tag/{{tag.name}}">{{tag.name}} ({{tag.picture_count}})</a></li>
+    </ul>
+
+    </div>
+  </div>
+</div>

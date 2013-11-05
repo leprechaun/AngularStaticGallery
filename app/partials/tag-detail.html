@@ -1,0 +1,7 @@
+<h1>{{tag.name}}</h1>
+
+<ul class="specs">
+  <li ng-repeat="picture in tag.pictures">
+    <a href="#/picture/{{picture.id}}"><img ng-src="data/thumbnails/{{picture.thumbnail}}"></a>
+  </li>
+</ul>
