@@ -32,4 +32,4 @@ So, this site will assume that under the web root, you have the following data h
 
 Theoretically, the images and thumbnails could be hosted anywhere statically. The json data should be on the same domain as the gallery, though.
 
-You should really just test it with ShotwellExtractor.
+You should really just test it with ShotwellExtractor. http://github.com/leprechaun/ShotwellExtractor
