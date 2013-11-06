@@ -10,6 +10,13 @@
         <option value="age">Newest</option>
       </select>
 
+    <ul class="tag-list">
+        <li ng-repeat="tag in tags | filter:query | orderBy:orderProp">
+            <a href="#/tag/{{tag.name}}">{{tag.name}} ({{tag.picture_count}})</a>
+        </li>
+    </ul>
+
+
     </div>
     <div class="span10">
       <!--Body content-->

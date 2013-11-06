@@ -57,17 +57,18 @@ ul.phone-thumbs img:hover {
 }
 
 
-ul.specs {
+ul.tag-pictures {
   clear: both;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-ul.specs > li{
+ul.tag-pictures > li{
   display: inline-block;
-  width: 200px;
+  width: 140px;
   vertical-align: top;
+  margin-top: 25px;
 }
 
 ul.specs > li > span{
@@ -81,4 +82,8 @@ ul.specs dt {
 
 h1 {
   border-bottom: 1px solid gray;
+}
+
+img.orientation-6 {
+    image-orientation: 90deg;
 }

@@ -1,5 +1,33 @@
-<h1>{{picture.title}}</h1>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
 
-<ul class="specs">
-    <a href="#/picture/{{picture.id}}"><img ng-src="data/thumbnails/{{picture.thumbnail}}"></a>
-</ul>
+      Search: <input ng-model="query">
+      Sort by:
+      <select ng-model="orderProp">
+        <option value="name">Alphabetical</option>
+        <option value="-picture_count">Count</option>
+      </select>
+
+    <ul class="tag-list">
+        <li ng-repeat="tag in tags | filter:query | orderBy:orderProp">
+            <a href="#/tag/{{tag.name}}">{{tag.name}} ({{tag.picture_count}})</a>
+        </li>
+    </ul>
+
+
+    </div>
+    <div class="span10">
+      <!--Body content-->
+        <h1>{{picture.id}} - {{picture.datetime}}</h1>
+        <p>{{picture.comment}}</p>
+
+        <ul><li style="display: inline; margin-left: 10px;" ng-repeat="tag in picture.tags"><a href="#/tag/{{tag}}">{{tag}}</a></li></ul>
+
+        <img class="rotation-{{picture.orientation}}" ng-src="{{picturePath}}">
+
+
+    </div>
+  </div>
+</div>
