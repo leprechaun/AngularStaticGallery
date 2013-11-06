@@ -2,17 +2,17 @@
 
 /* Controllers */
 
-function TagListCtrl($scope, Galery) {
-  $scope.tags = Galery.tag.query();
+function TagListCtrl($scope, Gallery) {
+  $scope.tags = Gallery.tag.query();
   $scope.orderProp = 'name';
 }
 
-function PictureDetailCtrl($scope, $routeParams, Galery) {
-  $scope.picture = Galery.picture.get({pictureId: $routeParams.pictureId}, function(picture) {
-    $scope.picturePath = pictures_path + "/" + picture.path;
+function PictureDetailCtrl($scope, $routeParams, Gallery) {
+  $scope.picture = Gallery.picture.get({pictureId: $routeParams.pictureId}, function(picture) {
+    $scope.picturePath = pictures_base_path + "/" + picture.path;
   });
 
-  $scope.tags = Galery.tag.query();
+  $scope.tags = Gallery.tag.query();
   $scope.orderProp = 'name';
 
   $scope.setImage = function(imageUrl) {
@@ -24,7 +24,7 @@ function PictureDetailCtrl($scope, $routeParams, Galery) {
 
 
 
-function TagDetailCtrl($scope, $routeParams, Galery) {
+function TagDetailCtrl($scope, $routeParams, Gallery) {
 
   if($routeParams.pageId == undefined)
   {
@@ -58,12 +58,12 @@ function TagDetailCtrl($scope, $routeParams, Galery) {
       }
   }
 
-  $scope.tags = Galery.tag.query();
+  $scope.tags = Gallery.tag.query();
   $scope.orderProp = 'name';
 
 
 
-  $scope.tag = Galery.tag.get({tagId: $routeParams.tagId}, function(tag) {
+  $scope.tag = Gallery.tag.get({tagId: $routeParams.tagId}, function(tag) {
     $scope.mainImageUrl = tag.thumbnail;
     $scope.tag = tag;
 

@@ -12,7 +12,7 @@ angular.module('phonecatServices', ['ngResource']).
 });
     */
 var myModule = angular.module('phonecatServices', ['ngResource']);
-myModule.factory('Galery', function($resource){
+myModule.factory('Gallery', function($resource){
         return {
             tag: $resource('data/tags/:tagId.json', {}, {
                 query: {method:'GET', 'params':{tagId:'all-tags'}, isArray:true}
