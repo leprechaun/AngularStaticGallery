@@ -67,7 +67,6 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
       }
       $scope.pages[pi].push(tag.pictures[i]);
     }
-    console.log(tag.pictures);
 
     $scope.page = $scope.pages[$scope.current_page];
   });
