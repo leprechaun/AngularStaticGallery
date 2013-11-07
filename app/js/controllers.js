@@ -1,29 +1,24 @@
 'use strict';
 
-/* Controllers */
-
+/* TagList */
 function TagListCtrl($scope, Gallery) {
   $scope.tags = Gallery.tag.query();
   $scope.orderProp = 'name';
+  $scope.thumbs_base_path = thumbs_base_path;
 }
 
+/* PictureDetail */
 function PictureDetailCtrl($scope, $routeParams, Gallery) {
   $scope.picture = Gallery.picture.get({pictureId: $routeParams.pictureId}, function(picture) {
-    $scope.picturePath = pictures_base_path + "/" + picture.path;
+    $scope.picturePath = picture.path;
   });
 
   $scope.tags = Gallery.tag.query();
   $scope.orderProp = 'name';
-
-  $scope.setImage = function(imageUrl) {
-    $scope.mainImageUrl = imageUrl;
-  }
+  $scope.pictures_base_path = pictures_base_path;
 }
 
-//PhoneListCtrl.$inject = ['$scope', 'Phone'];
-
-
-
+/* TagDetail */
 function TagDetailCtrl($scope, $routeParams, Gallery) {
 
   if($routeParams.pageId == undefined)
@@ -34,34 +29,30 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
   {
       $scope.current_page = $routeParams.pageId;
   }
+
+  $scope.thumbs_base_path = thumbs_base_path;
   $scope.current_page = 0;
   $scope.items_per_page = 32;
   $scope.pages = [];
   $scope.page = [];
   $scope.nextPage = function(){
-      if( $scope.pages[$scope.current_page+1] != undefined)
-      {
-       $scope.current_page = $scope.current_page + 1;
+    if( $scope.pages[$scope.current_page+1] != undefined)
+    {
+      $scope.current_page = $scope.current_page + 1;
       $scope.page = $scope.pages[$scope.current_page];
-      console.log("next page");
-      console.log($scope.page);
-    
-      }
-       }
+    }
+  }
 
   $scope.previousPage = function(){
-      if( $scope.pages[$scope.current_page-1] != undefined)
-      {
+    if( $scope.pages[$scope.current_page-1] != undefined)
+    {
       $scope.current_page = $scope.current_page - 1;
       $scope.page = $scope.pages[$scope.current_page];
-      console.log("previous page");
-      }
+    }
   }
 
   $scope.tags = Gallery.tag.query();
   $scope.orderProp = 'name';
-
-
 
   $scope.tag = Gallery.tag.get({tagId: $routeParams.tagId}, function(tag) {
     $scope.mainImageUrl = tag.thumbnail;
@@ -69,16 +60,15 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
 
     for( var i = 0; i < tag.pictures.length; i++ )
     {
-        var pi = Math.floor(i / $scope.items_per_page);
-        if( $scope.pages[pi] == undefined)
-        {
-            $scope.pages[pi] = [];
-        }
-        $scope.pages[pi].push(tag.pictures[i]);
+      var pi = Math.floor(i / $scope.items_per_page);
+      if( $scope.pages[pi] == undefined)
+      {
+        $scope.pages[pi] = [];
+      }
+      $scope.pages[pi].push(tag.pictures[i]);
     }
+    console.log(tag.pictures);
 
     $scope.page = $scope.pages[$scope.current_page];
   });
 }
-
-//PhoneDetailCtrl.$inject = ['$scope', '$routeParams', 'Phone'];

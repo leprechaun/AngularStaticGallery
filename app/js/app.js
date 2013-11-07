@@ -1,8 +1,10 @@
 'use strict';
 
-/* App Module */
+var pictures_base_path = "http://localhost/pictures/";
+var thumbs_base_path = "data/thumbnails/";
 
-angular.module('phonecat', ['phonecatFilters', 'phonecatServices', 'anotherServices']).
+/* App Module */
+angular.module('phonecat', ['phonecatFilters', 'phonecatServices']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       when('/tag', {templateUrl: 'partials/tag-bar.html',   controller: TagListCtrl}).
