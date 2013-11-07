@@ -15,5 +15,18 @@
     </ul>
 
     </div>
+
+
+    <div class="span10">
+      <!--Body content-->
+      <h1>All Tags</h1>
+        <ul class="tag-pictures">
+          <li ng-repeat="tag in tags | filter:query | orderBy:orderProp">
+            <a href="#/tag/{{tag.name}}" title="{{tag.name}}"><img ng-src="{{thumbs_base_path}}{{tag.thumbnail}}"></a><br/>
+            <a href="#/tag/{{tag.name}}" title="{{tag.name}}">{{tag.name}} ({{tag.picture_count}})</a>
+          </li>
+        </ul>
+    </div>
+
   </div>
 </div>
