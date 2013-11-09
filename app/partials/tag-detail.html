@@ -21,10 +21,11 @@
     <div class="span10">
       <!--Body content-->
       <h1>{{tag.name}} - {{tag.picture_count}} pictures</h1>
-      <button ng-click="previousPage()">Previous</button><button ng-click="nextPage()">Next</button>
+        <a href="#/tag/{{tag.name}}/{{pp}}">Previous Page ({{pp}})</a>
+        <a style="float: right;" href="#/tag/{{tag.name}}/{{np}}">Next Page ({{np}})</a>
         <ul class="tag-pictures">
           <li ng-repeat="picture in page">
-            <a href="#/picture/{{picture.id}}" title="{{picture.title}}"><img ng-src="{{thumbs_base_path}}{{picture.thumbnail}}"></a>
+            <a href="#/tag/{{tag.name}}/picture/{{picture.id}}" title="{{picture.title}}"><img ng-src="{{thumbs_base_path}}{{picture.thumbnail}}"></a>
           </li>
         </ul>
     </div>

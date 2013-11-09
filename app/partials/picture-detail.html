@@ -18,16 +18,21 @@
 
 
     </div>
-    <div class="span10">
+    <div class="span8">
       <!--Body content-->
         <h1>{{picture.id}} - {{picture.datetime}}</h1>
         <p>{{picture.comment}}</p>
 
-        <ul><li style="display: inline; margin-left: 10px;" ng-repeat="tag in picture.tags"><a href="#/tag/{{tag}}">{{tag}}</a></li></ul>
 
+        <a href="#/tag/{{tag.name}}/picture/{{pp}}">Previous</a>
+        <a style="float: right" href="#/tag/{{tag.name}}/picture/{{np}}">Next</a>
         <img class="rotation-{{picture.orientation}}" ng-src="{{pictures_base_path}}{{picture.path}}">
 
 
+    </div>
+    <div class="span2">
+
+        In tags: <ul><li style="display: inline; margin-left: 10px;" ng-repeat="tag in picture.tags"><a href="#/tag/{{tag}}">{{tag}}</a></li></ul>
     </div>
   </div>
 </div>

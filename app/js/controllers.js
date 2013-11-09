@@ -2,6 +2,7 @@
 
 /* TagList */
 function TagListCtrl($scope, Gallery) {
+
   $scope.tags = Gallery.tag.query();
   $scope.orderProp = 'name';
   $scope.thumbs_base_path = thumbs_base_path;
@@ -12,6 +13,36 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
   $scope.picture = Gallery.picture.get({pictureId: $routeParams.pictureId}, function(picture) {
     $scope.picturePath = picture.path;
   });
+
+  if( $routeParams.tagId != undefined )
+  {
+    $scope.tag = Gallery.tag.get({tagId: $routeParams.tagId}, function(tag) {
+        var index = 0;
+        for( var i = 0; i < tag.pictures.length; i++ )
+        {
+            if( parseInt(tag.pictures[i].id) == parseInt($routeParams.pictureId))
+            {
+                index = i;
+            }
+        }
+
+        if( index == 0)
+        {
+            $scope.pp = tag.pictures[0].id;
+            $scope.np = tag.pictures[index+1].id
+        }
+        else if( index == i-1 )
+        {
+            $scope.np = tag.pictures[i-1].id;
+            $scope.pp = tag.pictures[index-1].id
+        }
+        else
+        {
+            $scope.pp = tag.pictures[index-1].id
+            $scope.np = tag.pictures[index+1].id
+        }
+    });
+  }
 
   $scope.tags = Gallery.tag.query();
   $scope.orderProp = 'name';
@@ -27,11 +58,10 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
   }
   else
   {
-      $scope.current_page = $routeParams.pageId;
+      $scope.current_page = parseInt($routeParams.pageId);
   }
 
   $scope.thumbs_base_path = thumbs_base_path;
-  $scope.current_page = 0;
   $scope.items_per_page = 32;
   $scope.pages = [];
   $scope.page = [];
@@ -69,5 +99,17 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
     }
 
     $scope.page = $scope.pages[$scope.current_page];
+
+    $scope.pp = $scope.current_page - 1;
+    if( $scope.current_page == 0 )
+    {
+        $scope.pp = 0;
+    }
+
+    $scope.np = $scope.current_page + 1;
+    if( $scope.current_page == $scope.pages.length - 1 )
+    {
+        $scope.np = $scope.pages.length - 1;
+    }
   });
 }

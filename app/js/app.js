@@ -8,6 +8,8 @@ angular.module('phonecat', ['phonecatFilters', 'phonecatServices']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       when('/tag', {templateUrl: 'partials/tag-bar.html',   controller: TagListCtrl}).
+      when('/tag/:tagId/picture/:pictureId', {templateUrl: 'partials/picture-detail.html', controller: PictureDetailCtrl}).
+      when('/tag/:tagId/:pageId', {templateUrl: 'partials/tag-detail.html', controller: TagDetailCtrl}).
       when('/tag/:tagId', {templateUrl: 'partials/tag-detail.html', controller: TagDetailCtrl}).
       when('/picture/:pictureId', {templateUrl: 'partials/picture-detail.html', controller: PictureDetailCtrl}).
       otherwise({redirectTo: '/tag'});
