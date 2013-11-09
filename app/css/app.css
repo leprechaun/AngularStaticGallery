@@ -87,3 +87,7 @@ h1 {
 img.orientation-6 {
     image-orientation: 90deg;
 }
+
+.angular-google-map {
+                display: block;
+        }

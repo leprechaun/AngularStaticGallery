@@ -26,13 +26,26 @@
 
         <a href="#/tag/{{tag.name}}/picture/{{pp}}">Previous</a>
         <a style="float: right" href="#/tag/{{tag.name}}/picture/{{np}}">Next</a>
-        <img class="rotation-{{picture.orientation}}" ng-src="{{pictures_base_path}}{{picture.path}}">
+        <img ng-src="{{pictures_base_path}}{{picture.path}}"></img>
 
+        <ul>
+            <li ng-repeat="picture in picture_slice" style="display: inline;" >
+                <a href="#/tag/{{tag.name}}/picture/{{picture.id}}"><img ng-src="{{thumbs_base_path}}{{picture.thumbnail}}"></a>
+            </li>
+        </ul>
 
     </div>
-    <div class="span2">
 
-        In tags: <ul><li style="display: inline; margin-left: 10px;" ng-repeat="tag in picture.tags"><a href="#/tag/{{tag}}">{{tag}}</a></li></ul>
+
+    <div class="span2">
+        In tags:
+        <ul>
+            <li style="display: inline; margin-left: 10px;" ng-repeat="tag in picture.tags">
+                <a href="#/tag/{{tag}}">{{tag}}</a>
+            </li>
+        </ul>
+
+        <google-map center="center" draggable="true" zoom="zoom" markers="markers" mark-click="true" style="height: 200px"></google-map>
     </div>
   </div>
 </div>

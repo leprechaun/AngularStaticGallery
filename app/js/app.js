@@ -3,8 +3,11 @@
 var pictures_base_path = "http://localhost/pictures/";
 var thumbs_base_path = "data/thumbnails/";
 
+var tags = null;
+var tags_hash = {};
+
 /* App Module */
-angular.module('phonecat', ['phonecatFilters', 'phonecatServices']).
+angular.module('phonecat', ['phonecatFilters', 'phonecatServices', 'google-maps']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       when('/tag', {templateUrl: 'partials/tag-bar.html',   controller: TagListCtrl}).
