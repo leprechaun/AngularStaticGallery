@@ -97,32 +97,10 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
   }
 }
 
-/* TagDetail */
-function TagDetailCtrl($scope, $routeParams, Gallery) {
-  /* SET SOME DEFAULTS */
-  $scope.thumbs_base_path = thumbs_base_path;
-  $scope.items_per_page = 32;
-  $scope.pages = [];
-  $scope.page = [];
-  $scope.orderProp = 'name';
-  $scope.current_page = 0;
+/*  get tag callback */
+function get_tag_callback(tag, $scope)
+{
 
-  if($routeParams.pageId != undefined)
-  {
-    $scope.current_page = parseInt($routeParams.pageId);
-  }
-
-  /* GET ALL TAGS */
-  if(tags != undefined){
-    $scope.tags = tags;
-  }
-  else{
-    $scope.tags = Gallery.tag.query();
-    tags = $scope.tags;
-  }
-
-  /* GET TAG + CALLBACK */
-  $scope.tag = Gallery.tag.get({tagId: $routeParams.tagId}, function(tag) {
     $scope.tag = tag;
 
     for( var i = 0; i < tag.pictures.length; i++ )
@@ -150,6 +128,81 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
     {
         $scope.np = $scope.pages.length - 1;
     }
-  });
+
+    $scope.pagination.next = $scope.np;
+    $scope.pagination.previous = $scope.pp;
+    $scope.pagination.last = $scope.lp;
+
+    /*  should always be an odd number */
+    var pagination_window_length = 5;
+    var wing_length = Math.floor(pagination_window_length / 2);
+
+    var left_wing = 0;
+    if( $scope.current_page - wing_length > 0 )
+    {
+        left_wing = $scope.current_page - wing_length;
+    }
+
+    var right_wing = $scope.current_page + wing_length;
+    if( right_wing > $scope.pages.length )
+    {
+        right_wing = $scope.pages.length - 1;
+    }
+
+    for( var i = left_wing; i <= right_wing; i++ )
+    {
+        $scope.pagination.windows.push(i);
+    }
+}
+
+function get_tag(tagId, callback, Gallery, $scope)
+{
+  if( tags_hash[tagId] == undefined )
+  {
+      $scope.tag = Gallery.tag.get({tagId:tagId}, function(tag) {
+        tags_hash[tagId] = tag;
+        callback(tag, $scope);
+      });
+  }
+  else
+  {
+        callback(tags_hash[tagId], $scope);
+  }
+}
+
+
+/* TagDetail */
+function TagDetailCtrl($scope, $routeParams, Gallery) {
+  /* SET SOME DEFAULTS */
+  $scope.thumbs_base_path = thumbs_base_path;
+  $scope.items_per_page = 32;
+  $scope.pages = [];
+  $scope.page = [];
+  $scope.orderProp = 'name';
+  $scope.current_page = 0;
+
+  $scope.pagination = {
+    'first': 0,
+    'previous': 0,
+    'windows': [],
+    'next': 0,
+    'last': 0
+  };
+
+  if(parseInt($routeParams.pageId) >= 0)
+  {
+    $scope.current_page = parseInt($routeParams.pageId);
+  }
+
+  /* GET ALL TAGS */
+  if(tags != undefined){
+    $scope.tags = tags;
+  }
+  else{
+    $scope.tags = Gallery.tag.query();
+    tags = $scope.tags;
+  }
+
   /* GET TAG + CALLBACK */
+    get_tag($routeParams.tagId, get_tag_callback, Gallery, $scope);
 }

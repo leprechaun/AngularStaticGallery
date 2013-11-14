@@ -21,10 +21,23 @@
     <div class="span10">
       <!--Body content-->
       <h1>{{tag.name}} - {{tag.picture_count}} pictures ({{current_page}} / {{lp}})</h1>
-        <span><a href="#/tag/{{tag.name}}/{{fp}}">First ({{fp}})</a> | 
-        <a href="#/tag/{{tag.name}}/{{pp}}">Previous ({{pp}})</a></span>
-        <span style="float: right;"><a href="#/tag/{{tag.name}}/{{np}}">Next ({{np}})</a> | 
-        <a href="#/tag/{{tag.name}}/{{lp}}">Last ({{lp}})</a></span>
+        <ul>
+            <li style="display: inline;">
+                <a href="#/tag/{{tag.name}}/{{pagination.first}}">First</a> | 
+            </li>
+            <li style="display: inline;">
+                <a href="#/tag/{{tag.name}}/{{pagination.previous}}">Previous</a> | 
+            </li>
+            <li ng-repeat="p in pagination.windows" style="display: inline; {{p == current_page && 'font-weight: bold;' || ''}}">
+                <a href="#/tag/{{tag.name}}/{{p}}">Page {{p}}</a> | 
+            </li>
+            <li style="display: inline;">
+                <a href="#/tag/{{tag.name}}/{{pagination.next}}">Next</a> | 
+            </li>
+            <li style="display: inline;">
+                <a href="#/tag/{{tag.name}}/{{pagination.last}}">Last</a>
+            </li>
+        </ul>
         <ul class="tag-pictures">
           <li ng-repeat="picture in page">
             <a href="#/tag/{{tag.name}}/picture/{{picture.id}}" title="{{picture.title}}"><img ng-src="{{thumbs_base_path}}{{picture.thumbnail}}"></a>
