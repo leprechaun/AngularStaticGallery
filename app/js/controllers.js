@@ -144,6 +144,8 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
     }
 
     $scope.np = $scope.current_page + 1;
+    $scope.lp = $scope.pages.length - 1;
+    $scope.fp = 0;
     if($scope.current_page == $scope.pages.length - 1)
     {
         $scope.np = $scope.pages.length - 1;

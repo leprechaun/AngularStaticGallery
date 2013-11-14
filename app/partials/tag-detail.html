@@ -20,9 +20,11 @@
     </div>
     <div class="span10">
       <!--Body content-->
-      <h1>{{tag.name}} - {{tag.picture_count}} pictures</h1>
-        <a href="#/tag/{{tag.name}}/{{pp}}">Previous Page ({{pp}})</a>
-        <a style="float: right;" href="#/tag/{{tag.name}}/{{np}}">Next Page ({{np}})</a>
+      <h1>{{tag.name}} - {{tag.picture_count}} pictures ({{current_page}} / {{lp}})</h1>
+        <span><a href="#/tag/{{tag.name}}/{{fp}}">First ({{fp}})</a> | 
+        <a href="#/tag/{{tag.name}}/{{pp}}">Previous ({{pp}})</a></span>
+        <span style="float: right;"><a href="#/tag/{{tag.name}}/{{np}}">Next ({{np}})</a> | 
+        <a href="#/tag/{{tag.name}}/{{lp}}">Last ({{lp}})</a></span>
         <ul class="tag-pictures">
           <li ng-repeat="picture in page">
             <a href="#/tag/{{tag.name}}/picture/{{picture.id}}" title="{{picture.title}}"><img ng-src="{{thumbs_base_path}}{{picture.thumbnail}}"></a>
