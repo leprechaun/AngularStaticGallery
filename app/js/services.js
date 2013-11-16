@@ -1,17 +1,7 @@
 'use strict';
 
 /* Services */
-
-/*
-angular.module('phonecatServices', ['ngResource']).
-    factory('Tag', function($resource){
-        return $resource('data/tags/:tagId.json', {}, {
-            query: {method:'GET', params:{tagId:'all-tags'}, isArray:true},
-        }
-  );
-});
-    */
-var myModule = angular.module('phonecatServices', ['ngResource']);
+var myModule = angular.module('galleryServices', ['ngResource']);
 myModule.factory('Gallery', function($resource){
         return {
             tag: $resource('data/tags/:tagId.json', {}, {
