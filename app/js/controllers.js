@@ -29,25 +29,28 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
   /* GET PICTURE + CALLBACK */
   $scope.picture = Gallery.picture.get({pictureId: $routeParams.pictureId}, function(picture){
     $scope.picturePath = picture.path;
-    $scope.exif = picture.exif;
 
-    if( $scope.exif['GPS GPSLongitude'] )
+    if( 'exif' in picture )
     {
-        var longitude = $scope.exif['GPS GPSLongitude'][0][0]/$scope.exif['GPS GPSLongitude'][0][1];
-        var latitude = $scope.exif['GPS GPSLatitude'][0][0]/$scope.exif['GPS GPSLatitude'][0][1];
-
-        if( $scope.exif['GPS GPSLongitudeRef'] == "W" )
+        $scope.exif = picture.exif;
+        if( 'GPS GPSLongitude' in $scope.exif )
         {
-            longitude = -longitude;
-        }
+            var longitude = $scope.exif['GPS GPSLongitude'][0][0]/$scope.exif['GPS GPSLongitude'][0][1];
+            var latitude = $scope.exif['GPS GPSLatitude'][0][0]/$scope.exif['GPS GPSLatitude'][0][1];
 
-        if( $scope.exif['GPS GPSLatitudeREf'] == "S")
-        {
-            latitude = -latitude;
-        }
+            if( $scope.exif['GPS GPSLongitudeRef'] == "W" )
+            {
+                longitude = -longitude;
+            }
 
-        $scope.center = {longitude: longitude, latitude: latitude};
-        $scope.markers = [{longitude: longitude, latitude: latitude}];
+            if( $scope.exif['GPS GPSLatitudeREf'] == "S")
+            {
+                latitude = -latitude;
+            }
+
+            $scope.center = {longitude: longitude, latitude: latitude};
+            $scope.markers = [{longitude: longitude, latitude: latitude}];
+        }
     }
   });
 
