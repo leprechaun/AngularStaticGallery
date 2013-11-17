@@ -12,5 +12,9 @@ angular.module('gallery', ['galleryFilters', 'galleryServices', 'google-maps']).
       when('/tag/:tagId/:pageId', {templateUrl: 'partials/tag-detail.html', controller: TagDetailCtrl}).
       when('/tag/:tagId', {templateUrl: 'partials/tag-detail.html', controller: TagDetailCtrl}).
       when('/picture/:pictureId', {templateUrl: 'partials/picture-detail.html', controller: PictureDetailCtrl}).
-      otherwise({redirectTo: '/tag'});
+      when('/event/', {templateUrl: 'partials/event-list.html', controller: EventListCtrl}).
+      when('/event/:eventId', {templateUrl: 'partials/event-detail.html', controller: EventDetailCtrl}).
+      when('/event/:eventId/:pageId', {templateUrl: 'partials/event-detail.html', controller: EventDetailCtrl}).
+      when('/event/:eventId/picture/:pictureId', {templateUrl: 'partials/picture-detail.html', controller: PictureDetailCtrl}).
+      otherwise({redirectTo: '/event'});
 }]);

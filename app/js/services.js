@@ -9,6 +9,9 @@ myModule.factory('Gallery', function($resource){
             }),
             picture: $resource('data/pictures/:pictureId.json', {}, {
                 query: {method:'GET', 'params':{}, isArray:false}
+            }),
+            'event': $resource('data/events/:eventId.json', {}, {
+                query: {method:'GET', 'params':{eventId: 'all-events'}, isArray:true}
             })
         };
 });

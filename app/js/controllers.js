@@ -1,4 +1,25 @@
 'use strict';
+/* EventList */
+function EventListCtrl($scope, Gallery)
+{
+    $scope.events = Gallery.event.query(function(events){
+        return events;
+    });
+
+    $scope.orderProp = "name";
+    $scope.eventOrderProp = "-name";
+    $scope.thumbs_base_path = thumbs_base_path;
+    if( tags == null )
+    {
+        $scope.tags = Gallery.tag.query();
+        tags = $scope.tags;
+    }
+    else
+    {
+        $scope.tags = tags;
+    }
+
+}
 
 /* TagList */
 function TagListCtrl($scope, Gallery){
@@ -13,8 +34,45 @@ function TagListCtrl($scope, Gallery){
         $scope.tags = tags;
     }
 
+  $scope.events = Gallery.event.query();
+
   $scope.orderProp = 'name';
   $scope.thumbs_base_path = thumbs_base_path;
+}
+
+function get_picture_source_callback(source, pictureId, $scope)
+{
+    var index = 0;
+    for( var i = 0; i < source.pictures.length; i++ )
+    {
+      if( parseInt(source.pictures[i].id) == parseInt(pictureId))
+      {
+        index = i;
+      }
+    }
+
+    if( index == 0)
+    {
+      $scope.pp = source.pictures[0].id;
+      $scope.np = source.pictures[index+1].id
+    }
+    else if( index == i-1 )
+    {
+      $scope.np = source.pictures[i-1].id;
+      $scope.pp = source.pictures[index-1].id
+    }
+    else
+    {
+      $scope.pp = source.pictures[index-1].id
+      $scope.np = source.pictures[index+1].id
+    }
+
+
+    $scope.picture_slice = [];
+    for( var i = index - 2; i < index + 3; i++ )
+    {
+      $scope.picture_slice.push(source.pictures[i]);
+    }
 }
 
 /* PictureDetail */
@@ -54,41 +112,36 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
     }
   });
 
-
-  /* GET TAG */
-  $scope.tag = Gallery.tag.get({tagId: $routeParams.tagId}, function(tag){
-    var index = 0;
-    for( var i = 0; i < tag.pictures.length; i++ )
+    var parent_controller = "picture";
+    if( "eventId" in $routeParams )
     {
-      if( parseInt(tag.pictures[i].id) == parseInt($routeParams.pictureId))
-      {
-        index = i;
-      }
+        parent_controller = "event";
+        var parent_id = $routeParams.eventId;
+    }
+    else if( "tagId" in $routeParams )
+    {
+        parent_controller = "tag";
+        var parent_id = $routeParams.tagId;
     }
 
-    if( index == 0)
+    /* GET PICTURE SOURCE */
+    $scope.picture_source = parent_controller;
+    if( parent_controller == "event" )
     {
-      $scope.pp = tag.pictures[0].id;
-      $scope.np = tag.pictures[index+1].id
+        $scope.source = Gallery.event.get({eventId: parent_id},
+            function(event){
+                get_picture_source_callback(event, $routeParams.pictureId, $scope)
+            }
+        );
     }
-    else if( index == i-1 )
+    else if( parent_controller == "tag" )
     {
-      $scope.np = tag.pictures[i-1].id;
-      $scope.pp = tag.pictures[index-1].id
+        $scope.source = Gallery.tag.get({tagId: parent_id},
+            function(tag){
+                get_picture_source_callback(tag, $routeParams.pictureId, $scope);
+            }
+        );
     }
-    else
-    {
-      $scope.pp = tag.pictures[index-1].id
-      $scope.np = tag.pictures[index+1].id
-    }
-
-
-    $scope.picture_slice = [];
-    for( var i = index - 2; i < index + 3; i++ )
-    {
-      $scope.picture_slice.push(tag.pictures[i]);
-    }
-  });
 
   /* GET ALL TAGS */
   if(tags == null){
@@ -158,6 +211,13 @@ function get_tag_callback(tag, $scope)
     }
 }
 
+
+function get_event_callback(event, $scope)
+{
+    $scope.event = event;
+
+}
+
 function get_tag(tagId, callback, Gallery, $scope)
 {
   if( tags_hash[tagId] == undefined )
@@ -172,6 +232,19 @@ function get_tag(tagId, callback, Gallery, $scope)
         callback(tags_hash[tagId], $scope);
   }
 }
+
+
+function get_event(eventId, callback, Gallery, $scope)
+{
+  if( tags_hash[eventId] == undefined )
+  {
+        console.log(eventId);
+      $scope.tag = Gallery.event.get({eventId:eventId}, function(event) {
+        callback(event, $scope);
+      });
+  }
+}
+
 
 
 /* TagDetail */
@@ -208,4 +281,41 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
 
   /* GET TAG + CALLBACK */
     get_tag($routeParams.tagId, get_tag_callback, Gallery, $scope);
+}
+
+
+/* EventDetail */
+function EventDetailCtrl($scope, $routeParams, Gallery) {
+  /* SET SOME DEFAULTS */
+  $scope.thumbs_base_path = thumbs_base_path;
+  $scope.items_per_page = 32;
+  $scope.pages = [];
+  $scope.page = [];
+  $scope.orderProp = 'name';
+  $scope.current_page = 0;
+
+  $scope.pagination = {
+    'first': 0,
+    'previous': 0,
+    'windows': [],
+    'next': 0,
+    'last': 0
+  };
+
+  if(parseInt($routeParams.pageId) >= 0)
+  {
+    $scope.current_page = parseInt($routeParams.pageId);
+  }
+
+  /* GET ALL TAGS */
+  if(tags != undefined){
+    $scope.tags = tags;
+  }
+  else{
+    $scope.tags = Gallery.tag.query();
+    tags = $scope.tags;
+  }
+
+  /* GET TAG + CALLBACK */
+    get_event($routeParams.eventId, get_event_callback, Gallery, $scope);
 }
