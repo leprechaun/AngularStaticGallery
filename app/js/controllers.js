@@ -93,21 +93,30 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
         $scope.exif = picture.exif;
         if( 'GPS GPSLongitude' in $scope.exif )
         {
-            var longitude = $scope.exif['GPS GPSLongitude'][0][0]/$scope.exif['GPS GPSLongitude'][0][1];
-            var latitude = $scope.exif['GPS GPSLatitude'][0][0]/$scope.exif['GPS GPSLatitude'][0][1];
+            var longitude = [];
+            var latitude = [];
+            for( var i = 0; i < 3; i++ )
+            {
+                longitude[i] = $scope.exif['GPS GPSLongitude'][i][0] / $scope.exif['GPS GPSLongitude'][i][1];
+                latitude[i] = $scope.exif['GPS GPSLatitude'][i][0] / $scope.exif['GPS GPSLatitude'][i][1];
+            }
+
+            var dec_long = longitude[0] + (longitude[1]/60.) + (longitude[2]/3600.);
+            var dec_lat = latitude[0] + (latitude[1]/60.) + (latitude[2]/3600.);
 
             if( $scope.exif['GPS GPSLongitudeRef'] == "W" )
             {
-                longitude = -longitude;
+                true;
             }
 
             if( $scope.exif['GPS GPSLatitudeREf'] == "S")
             {
-                latitude = -latitude;
+                true;
             }
 
-            $scope.center = {longitude: longitude, latitude: latitude};
-            $scope.markers = [{longitude: longitude, latitude: latitude}];
+            $scope.center = {longitude: dec_long, latitude: dec_lat};
+            $scope.markers = [$scope.center];
+
         }
     }
   });
