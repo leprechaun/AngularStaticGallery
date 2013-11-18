@@ -106,17 +106,16 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
 
             if( $scope.exif['GPS GPSLongitudeRef'] == "W" )
             {
-                true;
+                dec_long= - dec_long;
             }
 
             if( $scope.exif['GPS GPSLatitudeREf'] == "S")
             {
-                true;
+                dec_lat= - dec_lat;
             }
 
             $scope.center = {longitude: dec_long, latitude: dec_lat};
             $scope.markers = [$scope.center];
-
         }
     }
   });
@@ -247,7 +246,6 @@ function get_event(eventId, callback, Gallery, $scope)
 {
   if( tags_hash[eventId] == undefined )
   {
-        console.log(eventId);
       $scope.tag = Gallery.event.get({eventId:eventId}, function(event) {
         callback(event, $scope);
       });
