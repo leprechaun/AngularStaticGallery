@@ -1,37 +1,35 @@
-
 <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span2">
-      <!--Sidebar content-->
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            Search: <input ng-model="query">
+            Sort by:
+            <select ng-model="orderProp">
+                <option value="name">Alphabetical</option>
+                <option value="-picture_count">Count</option>
+            </select>
 
-      Search: <input ng-model="query">
-      Sort by:
-      <select ng-model="orderProp">
-        <option value="name">Alphabetical</option>
-        <option value="-picture_count">Count</option>
-      </select>
+            <ul class="tag-list">
+                <li ng-repeat="tag in tags | filter:query | orderBy:orderProp">
+                    <a href="#/tag/{{tag.name}}">{{tag.name}} ({{tag.picture_count}})</a>
+                </li>
+            </ul>
+        </div>
 
-    <ul class="tag-list">
-        <li ng-repeat="tag in tags | filter:query | orderBy:orderProp"><a href="#/tag/{{tag.name}}">{{tag.name}} ({{tag.picture_count}})</a></li>
-    </ul>
-
-
-
+        <div class="span10">
+            <!--Body content-->
+            <h1>All Events</h1>
+            <ul class="tag-pictures">
+                <li ng-repeat="event in events | filter:query | orderBy:eventOrderProp">
+                    <a href="#/event/{{event.name}}" title="{{event.name}}">
+                        <img ng-src="{{thumbs_base_path}}{{event.thumbnail}}">
+                    </a><br/>
+                    <a href="#/event/{{event.name}}" title="{{event.name}}">
+                        {{event.name}} ({{event.picture_count}})
+                    </a>
+                </li>
+            </ul>
+        </div>
 
     </div>
-
-
-    <div class="span10">
-      <!--Body content-->
-      <h1>All Events</h1>
-
-        <ul class="tag-pictures">
-          <li ng-repeat="event in events | filter:query | orderBy:eventOrderProp">
-            <a href="#/event/{{event.name}}" title="{{event.name}}"><img ng-src="{{thumbs_base_path}}{{event.thumbnail}}"></a><br/>
-            <a href="#/event/{{event.name}}" title="{{event.name}}">{{event.name}} ({{event.picture_count}})</a>
-          </li>
-        </ul>
-    </div>
-
-  </div>
 </div>
