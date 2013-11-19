@@ -1,4 +1,5 @@
 'use strict';
+
 /* EventList */
 function EventListCtrl($scope, Gallery)
 {
@@ -18,7 +19,6 @@ function EventListCtrl($scope, Gallery)
     {
         $scope.tags = tags;
     }
-
 }
 
 /* TagList */
@@ -38,41 +38,6 @@ function TagListCtrl($scope, Gallery){
 
   $scope.orderProp = 'name';
   $scope.thumbs_base_path = thumbs_base_path;
-}
-
-function get_picture_source_callback(source, pictureId, $scope)
-{
-    var index = 0;
-    for( var i = 0; i < source.pictures.length; i++ )
-    {
-      if( parseInt(source.pictures[i].id) == parseInt(pictureId))
-      {
-        index = i;
-      }
-    }
-
-    if( index == 0)
-    {
-      $scope.pp = source.pictures[0].id;
-      $scope.np = source.pictures[index+1].id
-    }
-    else if( index == i-1 )
-    {
-      $scope.np = source.pictures[i-1].id;
-      $scope.pp = source.pictures[index-1].id
-    }
-    else
-    {
-      $scope.pp = source.pictures[index-1].id
-      $scope.np = source.pictures[index+1].id
-    }
-
-
-    $scope.picture_slice = [];
-    for( var i = index - 2; i < index + 3; i++ )
-    {
-      $scope.picture_slice.push(source.pictures[i]);
-    }
 }
 
 /* PictureDetail */
@@ -162,19 +127,18 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
 }
 
 /*  get tag callback */
-function get_tag_callback(tag, $scope)
+function get_picture_source_callback(source, $scope)
 {
+    $scope.source = source;
 
-    $scope.tag = tag;
-
-    for( var i = 0; i < tag.pictures.length; i++ )
+    for( var i = 0; i < source.pictures.length; i++ )
     {
       var pi = Math.floor(i / $scope.items_per_page);
       if($scope.pages[pi] == undefined)
       {
         $scope.pages[pi] = [];
       }
-      $scope.pages[pi].push(tag.pictures[i]);
+      $scope.pages[pi].push(source.pictures[i]);
     }
 
     $scope.page = $scope.pages[$scope.current_page];
@@ -220,12 +184,6 @@ function get_tag_callback(tag, $scope)
 }
 
 
-function get_event_callback(event, $scope)
-{
-    $scope.event = event;
-
-}
-
 function get_tag(tagId, callback, Gallery, $scope)
 {
   if( tags_hash[tagId] == undefined )
@@ -246,7 +204,7 @@ function get_event(eventId, callback, Gallery, $scope)
 {
   if( tags_hash[eventId] == undefined )
   {
-      $scope.tag = Gallery.event.get({eventId:eventId}, function(event) {
+      $scope.source = Gallery.event.get({eventId:eventId}, function(event) {
         callback(event, $scope);
       });
   }
@@ -263,6 +221,7 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
   $scope.page = [];
   $scope.orderProp = 'name';
   $scope.current_page = 0;
+  $scope.picture_source = "tag";
 
   $scope.pagination = {
     'first': 0,
@@ -287,7 +246,7 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
   }
 
   /* GET TAG + CALLBACK */
-    get_tag($routeParams.tagId, get_tag_callback, Gallery, $scope);
+    get_tag($routeParams.tagId, get_picture_source_callback, Gallery, $scope);
 }
 
 
@@ -300,6 +259,7 @@ function EventDetailCtrl($scope, $routeParams, Gallery) {
   $scope.page = [];
   $scope.orderProp = 'name';
   $scope.current_page = 0;
+  $scope.picture_source = "event";
 
   $scope.pagination = {
     'first': 0,
@@ -324,5 +284,5 @@ function EventDetailCtrl($scope, $routeParams, Gallery) {
   }
 
   /* GET TAG + CALLBACK */
-    get_event($routeParams.eventId, get_event_callback, Gallery, $scope);
+    get_event($routeParams.eventId, get_picture_source_callback, Gallery, $scope);
 }
