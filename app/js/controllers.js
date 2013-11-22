@@ -1,5 +1,6 @@
 'use strict';
 
+
 /* EventList */
 function EventListCtrl($scope, Gallery)
 {
