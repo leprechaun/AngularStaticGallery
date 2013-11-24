@@ -4,11 +4,11 @@ function get_group_callback(group, $scope){
     group.sort(function(g1, g2){
         var g1n = g1.name.toLowerCase();
         var g2n = g2.name.toLowerCase();
-        if( g1n > g2n ){
-            return 1;
+        if( g1.name.toLowerCase() > g2.name.toLowerCase() ){
+            return 1 * $scope.ordering;
         }
         else {
-            return -1;
+            return -1 * $scope.ordering;
         }
     });
     for( var i = 0; i < group.length; i++ )
@@ -78,6 +78,7 @@ function EventListCtrl($scope, $routeParams, Gallery)
     };
 
 
+    $scope.ordering = -1;
     $scope.items_per_page = 32;
     $scope.pages = [];
     $scope.group_type = "event";
@@ -105,6 +106,7 @@ function EventListCtrl($scope, $routeParams, Gallery)
 
 /* TagList */
 function TagListCtrl($scope, $routeParams, Gallery){
+    $scope.ordering = 1;
   $scope.tags = Gallery.tag.query(function(tags){get_group_callback(tags, $scope)});
 
   $scope.orderProp = 'name';
