@@ -37,7 +37,7 @@
                 </li>
             </ul>
             <ul class="tag-pictures">
-                <li ng-repeat="group in page">
+                <li ng-repeat="group in page | orderBy:orderProp">
                     <a href="#/{{group_type}}/{{group.name}}" title="{{group.name}}">
                         <img ng-src="{{thumbs_base_path}}{{group.thumbnail}}"><br />
                         {{group.name}}

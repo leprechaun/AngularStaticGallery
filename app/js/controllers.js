@@ -1,6 +1,16 @@
 'use strict';
 
 function get_group_callback(group, $scope){
+    group.sort(function(g1, g2){
+        var g1n = g1.name.toLowerCase();
+        var g2n = g2.name.toLowerCase();
+        if( g1n > g2n ){
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    });
     for( var i = 0; i < group.length; i++ )
     {
       var pi = Math.floor(i / $scope.items_per_page);
@@ -95,18 +105,7 @@ function EventListCtrl($scope, $routeParams, Gallery)
 
 /* TagList */
 function TagListCtrl($scope, $routeParams, Gallery){
-
-    if( tags == null )
-    {
-        $scope.tags = Gallery.tag.query();
-        tags = $scope.tags;
-    }
-    else
-    {
-        $scope.tags = tags;
-    }
-
-  $scope.events = Gallery.tag.query(function(tags){get_group_callback(tags, $scope)});
+  $scope.tags = Gallery.tag.query(function(tags){get_group_callback(tags, $scope)});
 
   $scope.orderProp = 'name';
   $scope.thumbs_base_path = thumbs_base_path;
@@ -129,7 +128,6 @@ function TagListCtrl($scope, $routeParams, Gallery){
     else{
         $scope.current_page = parseInt($routeParams.pageId);
     }
-    $scope.events = Gallery.event.query(function(events){get_group_callback(events, $scope)});
 
     $scope.orderProp = "name";
     $scope.eventOrderProp = "-name";
