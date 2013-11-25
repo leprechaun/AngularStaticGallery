@@ -136,7 +136,7 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
   $scope.zoom = 8;
 
   /* GET PICTURE + CALLBACK */
-  $scope.picture = Gallery.picture.get({pictureId: $routeParams.pictureId}, function(picture){
+  $scope.picture = get_picture(Gallery, $routeParams.pictureId, function(picture){
     $scope.picturePath = picture.path;
 
     if( 'exif' in picture )
