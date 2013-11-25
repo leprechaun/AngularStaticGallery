@@ -30,7 +30,7 @@
                 <li ng-repeat="group in groups | filter:query | startFrom:current_page*items_per_page | limitTo:items_per_page">
                     <a href="#/{{group_type}}/{{group.name}}" title="{{group.name}}">
                         <img ng-src="{{thumbs_base_path}}{{group.thumbnail}}"><br />
-                        {{group.name}}
+                        {{group.name}} ({{group.picture_count}})
                     </a>
                 </li>
             </ul>

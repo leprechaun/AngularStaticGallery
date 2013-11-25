@@ -18,25 +18,16 @@
         <div class="span10">
             <!--Body content-->
             <h1>{{source.name}} - {{source.picture_count}} pictures ({{current_page}} / {{lp}})</h1>
-            <ul>
-                <li style="display: inline;">
-                    <a href="#/{{picture_source}}/{{source.name}}/{{pagination.first}}">First</a> | 
-                </li>
-                <li style="display: inline;">
-                    <a href="#/{{picture_source}}/{{source.name}}/{{pagination.previous}}">Previous</a> | 
-                </li>
-                <li ng-repeat="p in pagination.windows" style="display: inline; {{p == current_page && 'font-weight: bold;' || ''}}">
-                    <a href="#/{{picture_source}}/{{source.name}}/{{p}}">Page {{p}}</a> | 
-                </li>
-                <li style="display: inline;">
-                    <a href="#/{{picture_source}}/{{source.name}}/{{pagination.next}}">Next</a> | 
-                </li>
-                <li style="display: inline;">
-                    <a href="#/{{picture_source}}/{{source.name}}/{{pagination.last}}">Last</a>
-                </li>
-            </ul>
+              <span style="float: left;">
+                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.first}}">First</a> | 
+                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.previous}}">Previous</a>
+              </span>
+              <span style="float: right;">
+                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.next}}">Next</a> | 
+                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.last}}">Last</a>
+              </span>
             <ul class="tag-pictures">
-                <li ng-repeat="picture in page">
+                <li ng-repeat="picture in source.pictures">
                     <a href="#/{{picture_source}}/{{source.name}}/picture/{{picture.id}}" title="{{picture.title}}">
                         <img ng-src="{{thumbs_base_path}}{{picture.thumbnail}}">
                     </a>
