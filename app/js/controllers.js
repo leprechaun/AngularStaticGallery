@@ -11,76 +11,19 @@ function get_group_callback(group, $scope){
             return -1 * $scope.ordering;
         }
     });
-    for( var i = 0; i < group.length; i++ )
-    {
-      var pi = Math.floor(i / $scope.items_per_page);
-      if($scope.pages[pi] == undefined)
-      {
-        $scope.pages[pi] = [];
-      }
-      $scope.pages[pi].push(group[i]);
-    }
 
-    $scope.page = $scope.pages[$scope.current_page];
-
-    $scope.pp = $scope.current_page - 1;
-    if($scope.current_page == 0)
-    {
-        $scope.pp = 0;
-    }
-
-    $scope.np = $scope.current_page + 1;
-    $scope.lp = $scope.pages.length - 1;
-    $scope.fp = 0;
-    if($scope.current_page == $scope.pages.length - 1)
-    {
-        $scope.np = $scope.pages.length - 1;
-    }
-
-    $scope.pagination.next = $scope.np;
-    $scope.pagination.previous = $scope.pp;
-    $scope.pagination.last = $scope.lp;
-
-    /*  should always be an odd number */
-    var pagination_window_length = 5;
-    var wing_length = Math.floor(pagination_window_length / 2);
-
-    var left_wing = 0;
-    if( $scope.current_page - wing_length > 0 )
-    {
-        left_wing = $scope.current_page - wing_length;
-    }
-
-    var right_wing = $scope.current_page + wing_length;
-    if( right_wing > $scope.pages.length )
-    {
-        right_wing = $scope.pages.length - 1;
-    }
-
-    for( var i = left_wing; i <= right_wing; i++ )
-    {
-        $scope.pagination.windows.push(i);
-    }
-
-// here
+    $scope.groups = group;
+    $scope.last_page = Math.floor(group.length / $scope.items_per_page);
+    $scope.next_page = Math.min($scope.last_page, $scope.current_page+1);
+    $scope.previous_page = Math.max(0, $scope.current_page-1);
 }
 
 
 /* EventList */
 function EventListCtrl($scope, $routeParams, Gallery)
 {
-    $scope.pagination = {
-      'first': 0,
-      'previous': 0,
-      'windows': [],
-      'next': 0,
-      'last': 0
-    };
-
-
     $scope.ordering = -1;
     $scope.items_per_page = 32;
-    $scope.pages = [];
     $scope.group_type = "event";
     if( $routeParams.pageId == undefined ){
         $scope.current_page = 0;
@@ -88,8 +31,12 @@ function EventListCtrl($scope, $routeParams, Gallery)
     else{
         $scope.current_page = parseInt($routeParams.pageId);
     }
-    $scope.events = Gallery.event.query(function(events){get_group_callback(events, $scope)});
 
+    $scope.events = Gallery.event.query(function(events){get_group_callback(events, $scope)});
+    //get_group(Gallery, "event");
+
+
+    $scope.pagenum = $scope.current_page;
     $scope.orderProp = "name";
     $scope.eventOrderProp = "-name";
     $scope.thumbs_base_path = thumbs_base_path;
@@ -131,6 +78,7 @@ function TagListCtrl($scope, $routeParams, Gallery){
         $scope.current_page = parseInt($routeParams.pageId);
     }
 
+    $scope.pagenum = $scope.current_page;
     $scope.orderProp = "name";
     $scope.eventOrderProp = "-name";
     $scope.thumbs_base_path = thumbs_base_path;
