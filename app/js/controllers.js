@@ -72,10 +72,10 @@ function get_group_callback(group, $scope){
 
 function get_listing_callback(listing, $scope){
     $scope.source = listing;
-    $scope.last_page = Math.floor(listing.length / $scope.items_per_page);
+    $scope.first_page = 0;
+    $scope.last_page = Math.floor(listing.pictures.length / $scope.items_per_page);
     $scope.next_page = Math.min($scope.last_page, $scope.current_page+1);
     $scope.previous_page = Math.max(0, $scope.current_page-1);
-    console.log(listing);
 }
 
 /* EventList */
@@ -103,27 +103,25 @@ function EventListCtrl($scope, $routeParams, Gallery)
 
 /* TagList */
 function TagListCtrl($scope, $routeParams, Gallery){
-    $scope.ordering = 1;
-  $scope.tags = get_group(Gallery, "tag", function(group){get_group_callback(group, $scope)});
-
+  $scope.ordering = 1;
   $scope.orderProp = 'name';
   $scope.thumbs_base_path = thumbs_base_path;
+  $scope.items_per_page = 32;
+  $scope.group_type = "tag";
+  if( $routeParams.pageId == undefined ){
+    $scope.current_page = 0;
+  }
+  else{
+    $scope.current_page = parseInt($routeParams.pageId);
+  }
 
-    $scope.items_per_page = 32;
-    $scope.pages = [];
-    $scope.group_type = "tag";
-    if( $routeParams.pageId == undefined ){
-        $scope.current_page = 0;
-    }
-    else{
-        $scope.current_page = parseInt($routeParams.pageId);
-    }
 
-    $scope.pagenum = $scope.current_page;
-    $scope.orderProp = "name";
-    $scope.eventOrderProp = "-name";
-    $scope.thumbs_base_path = thumbs_base_path;
+  $scope.tags = get_group(Gallery, "tag", function(group){get_group_callback(group, $scope)});
 
+  $scope.pagenum = $scope.current_page;
+  $scope.orderProp = "name";
+  $scope.eventOrderProp = "-name";
+  $scope.thumbs_base_path = thumbs_base_path;
 }
 
 /* PictureDetail */
@@ -137,38 +135,39 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
 
   /* GET PICTURE + CALLBACK */
   $scope.picture = get_picture(Gallery, $routeParams.pictureId, function(picture){
-    $scope.picturePath = picture.path;
+  $scope.picturePath = picture.path;
 
-    if( 'exif' in picture )
+  if( 'exif' in picture )
+  {
+    $scope.exif = picture.exif;
+    if( 'GPS GPSLongitude' in $scope.exif )
     {
-        $scope.exif = picture.exif;
-        if( 'GPS GPSLongitude' in $scope.exif )
-        {
-            var longitude = [];
-            var latitude = [];
-            for( var i = 0; i < 3; i++ )
-            {
-                longitude[i] = $scope.exif['GPS GPSLongitude'][i][0] / $scope.exif['GPS GPSLongitude'][i][1];
-                latitude[i] = $scope.exif['GPS GPSLatitude'][i][0] / $scope.exif['GPS GPSLatitude'][i][1];
-            }
+      var longitude = [];
+      var latitude = [];
+      for( var i = 0; i < 3; i++ )
+      {
+        longitude[i] = $scope.exif['GPS GPSLongitude'][i][0] / $scope.exif['GPS GPSLongitude'][i][1];
+        latitude[i] = $scope.exif['GPS GPSLatitude'][i][0] / $scope.exif['GPS GPSLatitude'][i][1];
+      }
 
-            var dec_long = longitude[0] + (longitude[1]/60.) + (longitude[2]/3600.);
-            var dec_lat = latitude[0] + (latitude[1]/60.) + (latitude[2]/3600.);
+      var dec_long = longitude[0] + (longitude[1]/60.) + (longitude[2]/3600.);
+      var dec_lat = latitude[0] + (latitude[1]/60.) + (latitude[2]/3600.);
 
-            if( $scope.exif['GPS GPSLongitudeRef'] == "W" )
-            {
-                dec_long= - dec_long;
-            }
+      if( $scope.exif['GPS GPSLongitudeRef'] == "W" )
+      {
+        dec_long= - dec_long;
+      }
 
-            if( $scope.exif['GPS GPSLatitudeREf'] == "S")
-            {
-                dec_lat= - dec_lat;
-            }
+      if( $scope.exif['GPS GPSLatitudeREf'] == "S")
+      {
+        dec_lat= - dec_lat;
+      }
 
-            $scope.center = {longitude: dec_long, latitude: dec_lat};
-            $scope.markers = [$scope.center];
-        }
+      $scope.center = {longitude: dec_long, latitude: dec_lat};
+      $scope.markers = [$scope.center];
+      $scope.$watch('center', function(){console.log(arguments);});
     }
+  }
   });
 
     var parent_controller = "picture";
