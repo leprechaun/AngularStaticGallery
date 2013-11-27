@@ -17,14 +17,14 @@
         </div>
         <div class="span10">
             <!--Body content-->
-            <h1>{{group_type}} - {{groups.length}} groups ({{current_page}} / {{last_page}})</h1>
+            <h1>{{group_type}} - {{groups.length}} groups ({{current_page+1}} / {{last_page+1}})</h1>
             <span style="float: left;">
-                <a href="#/{{group_type}}/page/0">First</a> | 
-                <a href="#/{{group_type}}/page/{{previous_page}}">Previous</a>
+                <a href="#/{{group_type}}/page/{{pagination.first}}">First</a> | 
+                <a href="#/{{group_type}}/page/{{pagination.previous}}">Previous</a>
             </span>
             <span style="float: right">
-                <a href="#/{{group_type}}/page/{{next_page}}">Next</a> | 
-                <a href="#/{{group_type}}/page/{{last_page}}">Last</a>
+                <a href="#/{{group_type}}/page/{{pagination.next}}">Next</a> | 
+                <a href="#/{{group_type}}/page/{{pagination.last}}">Last</a>
             </span>
             <ul class="tag-pictures">
                 <li ng-repeat="group in groups | filter:query | startFrom:current_page*items_per_page | limitTo:items_per_page">

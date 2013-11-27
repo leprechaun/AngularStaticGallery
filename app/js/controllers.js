@@ -1,24 +1,5 @@
 'use strict';
 
-var caches = {"event":{}, "tag": {}, "picture": {}, "all-tag": null, "all-event": null};
-
-/* Group is all-tags or all-events */
-function get_group(Gallery, type, callback){
-  return Gallery[type].query(callback);
-}
-
-/* Listing is a specific event or tags, tag/Self.json */
-function get_listing(Gallery, type, name, callback){
-  var key = type + "Id";
-  var args = {};
-  args[key] = name;
-  return Gallery[type].get(args, callback);
-}
-
-function get_picture(Gallery, id, callback){
-    return Gallery.picture.get({pictureId:id}, callback);
-}
-
 function get_group_callback(group, $scope){
     group.sort(function(g1, g2){
         var g1n = g1.name.toLowerCase();
@@ -31,10 +12,15 @@ function get_group_callback(group, $scope){
         }
     });
 
-    $scope.groups = group;
-    $scope.last_page = Math.floor(group.length / $scope.items_per_page);
-    $scope.next_page = Math.min($scope.last_page, $scope.current_page+1);
-    $scope.previous_page = Math.max(0, $scope.current_page-1);
+    var pp = 32;
+    var last = Math.floor(group.length / pp);
+
+    $scope.pagination = {};
+    $scope.pagination.per_page = 32;
+    $scope.pagination.first = 0;
+    $scope.pagination.previous = Math.max(0, $scope.current_page-1);
+    $scope.pagination.next = Math.min(last, $scope.current_page+1);
+    $scope.pagination.last = last;
 }
 
 function get_listing_callback(listing, $scope){
@@ -43,6 +29,17 @@ function get_listing_callback(listing, $scope){
     $scope.last_page = Math.floor(listing.pictures.length / $scope.items_per_page);
     $scope.next_page = Math.min($scope.last_page, $scope.current_page+1);
     $scope.previous_page = Math.max(0, $scope.current_page-1);
+
+    var pp = 32;
+    var last = Math.floor(listing.pictures.length / pp);
+
+    $scope.pagination = {};
+    $scope.pagination.per_page = 32;
+    $scope.pagination.first = 0;
+    $scope.pagination.previous = Math.max(0, $scope.current_page-1);
+    $scope.pagination.next = Math.min(last, $scope.current_page+1);
+    $scope.pagination.last = last;
+
 }
 
 /* EventList */
@@ -58,8 +55,8 @@ function EventListCtrl($scope, $routeParams, Gallery)
         $scope.current_page = parseInt($routeParams.pageId);
     }
 
-    get_group(Gallery, "event", function(group){get_group_callback(group, $scope)});
-    $scope.tags = get_group(Gallery, "tag", function(){});
+    Gallery.event.query(function(group){get_group_callback(group, $scope);});
+    $scope.tags = Gallery.tag.query(function(){});
 
 
     $scope.pagenum = $scope.current_page;
@@ -83,7 +80,8 @@ function TagListCtrl($scope, $routeParams, Gallery){
   }
 
 
-  $scope.tags = get_group(Gallery, "tag", function(group){get_group_callback(group, $scope)});
+  $scope.tags = Gallery.tag.query(function(group){get_group_callback(group, $scope);});
+  $scope.groups = $scope.tags;
 
   $scope.pagenum = $scope.current_page;
   $scope.orderProp = "name";
@@ -101,8 +99,7 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
   $scope.zoom = 8;
 
   /* GET PICTURE + CALLBACK */
-  $scope.picture = get_picture(Gallery, $routeParams.pictureId, function(picture){
-  $scope.picturePath = picture.path;
+  $scope.picture = Gallery.picture.get({pictureId: $routeParams.pictureId}, function(picture){
 
   if( 'exif' in picture )
   {
@@ -149,17 +146,14 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
         var parent_id = $routeParams.tagId;
     }
 
-    $scope.picture_source = parent_controller;
-    $scope.source = get_listing(
-      Gallery,
-      parent_controller,
-      parent_id,
-      function(source){ prep_picture_pagination(source, $routeParams.pictureId, $scope); }
-    );
+    var args = {};
+    args[parent_controller + "Id"] = parent_id;
 
+    $scope.picture_source = parent_controller;
+    $scope.source = Gallery[parent_controller].get(args, function(source){prep_picture_pagination(source, $routeParams.pictureId, $scope)});
 
   /* GET ALL TAGS */
-  $scope.tags = get_group(Gallery, "tag", function(){});
+  $scope.tags = Gallery.tag.query();
 }
 
 function prep_picture_pagination(source, current_id, $scope){
@@ -198,9 +192,9 @@ function TagDetailCtrl($scope, $routeParams, Gallery) {
     $scope.current_page = parseInt($routeParams.pageId);
   }
 
-  $scope.tags = get_group(Gallery, "tag", function(){});
+  $scope.tags = Gallery.tag.query();
+  $scope.group = Gallery.tag.get({tagId: $routeParams.tagId}, function(tag){get_listing_callback(tag, $scope);});
 
-  get_listing(Gallery, "tag", $routeParams.tagId, function(tag){get_listing_callback(tag, $scope);});
 }
 
 
@@ -220,8 +214,8 @@ function EventDetailCtrl($scope, $routeParams, Gallery) {
     $scope.current_page = parseInt($routeParams.pageId);
   }
 
-  $scope.tags = get_group(Gallery, "tag", function(){});
+  $scope.tags = Gallery.tag.query();
 
   /* GET TAG + CALLBACK */
-  get_listing(Gallery, "event", $routeParams.eventId, function(event){get_listing_callback(event, $scope);});
+  Gallery.event.get({eventId: $routeParams.eventId}, function(event){get_listing_callback(event, $scope)});
 }

@@ -18,7 +18,8 @@ ResourceCachingProxy.prototype._makeProxy = function(self, method){
     var args_stringified = JSON.stringify(args);
     if(!(args_stringified in self._cache[meth])){
       console.log("cache miss", meth, args);
-      var result = self._resource[meth](args, callback);
+      var result = self._resource[meth](args, function(result){if(typeof(callback)=="function"){callback(result);}});
+      //var result = self._resource[meth](args, callback);
       self._cache[meth][args_stringified] = result;
     }
     else {

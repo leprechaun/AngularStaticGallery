@@ -17,14 +17,14 @@
         </div>
         <div class="span10">
             <!--Body content-->
-            <h1>{{source.name}} - {{source.picture_count}} pictures ({{current_page}} / {{last_page}})</h1>
+            <h1>{{source.name}} - {{source.picture_count}} pictures ({{current_page+1}} / {{last_page+1}})</h1>
               <span style="float: left;">
-                <a href="#/{{picture_source}}/{{source.name}}/0">First</a> | 
-                <a href="#/{{picture_source}}/{{source.name}}/{{previous_page}}">Previous</a>
+                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.first">First</a> | 
+                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.previous}}">Previous</a>
               </span>
               <span style="float: right;">
-                <a href="#/{{picture_source}}/{{source.name}}/{{next_page}}">Next</a> | 
-                <a href="#/{{picture_source}}/{{source.name}}/{{last_page}}">Last</a>
+                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.next}}">Next</a> | 
+                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.last}}">Last</a>
               </span>
             <ul class="tag-pictures">
                 <li ng-repeat="picture in source.pictures | filter:query | startFrom:current_page*items_per_page | limitTo:items_per_page">
