@@ -4,52 +4,19 @@ var caches = {"event":{}, "tag": {}, "picture": {}, "all-tag": null, "all-event"
 
 /* Group is all-tags or all-events */
 function get_group(Gallery, type, callback){
-  var key = type + "-all";
-  if( caches[key] == null ){
-    console.log("get:", type);
-    caches[key] = Gallery[type].query(callback);
-  }
-  else {
-    console.log("cached:", type);
-    callback(caches[key]);
-  }
-  return caches[key];
+  return Gallery[type].query(callback);
 }
 
 /* Listing is a specific event or tags, tag/Self.json */
 function get_listing(Gallery, type, name, callback){
-  if(!(type in caches)){
-    caches[type] = {};
-  }
-
-  if(type == "event"){
-    var args = {eventId: name};
-  }
-  else if( type == "tag" ){
-    var args = {tagId: name};
-  }
-
-  if(!(name in caches[type])){
-    console.log("get:", type, name);
-    caches[type][name] = Gallery[type].get(args, callback);
-  }
-  else {
-    console.log("cached:", type, name);
-    callback(caches[type][name]);
-  }
-
-  return caches[type][name];
+  var key = type + "Id";
+  var args = {};
+  args[key] = name;
+  return Gallery[type].get(args, callback);
 }
 
 function get_picture(Gallery, id, callback){
-  if(!(id in caches.picture)){
-    console.log("get:", "picture", id);
-    caches.picture[id] = Gallery.picture.get({pictureId:id}, callback);
-  } else {
-    console.log("cached:", "picture", id);
-    callback(caches.picture[id]);
-  }
-  return caches.picture[id];
+    return Gallery.picture.get({pictureId:id}, callback);
 }
 
 function get_group_callback(group, $scope){
