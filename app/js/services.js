@@ -17,16 +17,19 @@ ResourceCachingProxy.prototype._makeProxy = function(self, method){
   return function(args, callback){
     var args_stringified = JSON.stringify(args);
     if(!(args_stringified in self._cache[meth])){
-      console.log("cache miss", meth, args);
-      var result = self._resource[meth](args, function(result){if(typeof(callback)=="function"){callback(result);}});
-      //var result = self._resource[meth](args, callback);
+      var result = self._resource[meth].apply(self._resource, arguments);
       self._cache[meth][args_stringified] = result;
     }
     else {
       var result = self._cache[meth][args_stringified];
-      console.log("cache hit", meth, args);
-      if( typeof(callback) == "function"){
-        callback(result);
+      if(arguments.length == 0){
+        true;
+      }
+      else if(typeof(arguments[0]) == 'function'){
+        arguments[0](result);
+      }
+      else{
+        arguments[1](result);
       }
     }
 

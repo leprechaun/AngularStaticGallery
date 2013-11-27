@@ -27,7 +27,7 @@
                 <a href="#/{{picture_source}}/{{source.name}}/{{pagination.last}}">Last</a>
               </span>
             <ul class="tag-pictures">
-                <li ng-repeat="picture in source.pictures | filter:query | startFrom:current_page*items_per_page | limitTo:items_per_page">
+                <li ng-repeat="picture in source.pictures | filter:query | startFrom:current_page*pagination.per_page | limitTo:items_per_page">
                     <a href="#/{{picture_source}}/{{source.name}}/picture/{{picture.id}}" title="{{picture.title}}">
                         <img ng-src="{{thumbs_base_path}}{{picture.thumbnail}}">
                     </a>

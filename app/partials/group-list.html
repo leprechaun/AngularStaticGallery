@@ -17,7 +17,7 @@
         </div>
         <div class="span10">
             <!--Body content-->
-            <h1>{{group_type}} - {{groups.length}} groups ({{current_page+1}} / {{last_page+1}})</h1>
+            <h1>{{group_type}} - {{groups.length}} groups ({{current_page+1}} / {{pagination.last+1}})</h1>
             <span style="float: left;">
                 <a href="#/{{group_type}}/page/{{pagination.first}}">First</a> | 
                 <a href="#/{{group_type}}/page/{{pagination.previous}}">Previous</a>
@@ -27,7 +27,7 @@
                 <a href="#/{{group_type}}/page/{{pagination.last}}">Last</a>
             </span>
             <ul class="tag-pictures">
-                <li ng-repeat="group in groups | filter:query | startFrom:current_page*items_per_page | limitTo:items_per_page">
+                <li ng-repeat="group in groups | filter:query | startFrom:current_page*pagination.per_page | limitTo:pagination.per_page">
                     <a href="#/{{group_type}}/{{group.name}}" title="{{group.name}}">
                         <img ng-src="{{thumbs_base_path}}{{group.thumbnail}}"><br />
                         {{group.name}} ({{group.picture_count}})

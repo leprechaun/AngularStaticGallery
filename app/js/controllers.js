@@ -15,6 +15,8 @@ function get_group_callback(group, $scope){
     var pp = 32;
     var last = Math.floor(group.length / pp);
 
+    $scope.groups = group;
+
     $scope.pagination = {};
     $scope.pagination.per_page = 32;
     $scope.pagination.first = 0;
@@ -39,7 +41,6 @@ function get_listing_callback(listing, $scope){
     $scope.pagination.previous = Math.max(0, $scope.current_page-1);
     $scope.pagination.next = Math.min(last, $scope.current_page+1);
     $scope.pagination.last = last;
-
 }
 
 /* EventList */
@@ -128,7 +129,7 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
       }
 
       $scope.center = {longitude: dec_long, latitude: dec_lat};
-      $scope.markers = [$scope.center];
+      $scope.markers = [{longitude: dec_long, latitude: dec_lat}];
       $scope.$watch('center', function(){console.log(arguments);});
     }
   }
