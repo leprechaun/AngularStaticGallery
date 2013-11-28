@@ -18,14 +18,27 @@
         <div class="span10">
             <!--Body content-->
             <h1>{{group_type}} - {{groups.length}} groups ({{current_page+1}} / {{pagination.last+1}})</h1>
-            <span style="float: left;">
-                <a href="#/{{group_type}}/page/{{pagination.first}}">First</a> | 
-                <a href="#/{{group_type}}/page/{{pagination.previous}}">Previous</a>
+            <span style="text-align: center;">
+                <ul style="width: 100%;">
+                    <li style="display: inline">
+                      <a href="#/{{group_type}}/page/{{pagination.first">First</a> | 
+                      <a href="#/{{group_type}}/page/{{pagination.previous}}">Previous</a> ...
+                    </li>
+                    <li style="display: inline;" ng-repeat="page in range(pagination.first,pagination.last, current_page)">
+                        <a style="padding: 0px 5px 0px 5px;"
+                            class="{{{true: 'current_page', false: ''}[page == current_page]}}"
+                            href="#/{{group_type}}/page/{{page}}">{{page+1}}</a>
+                    </li>
+                    <li style="display: inline"> ... 
+                      <a href="#/{{group_type}}/page/{{pagination.next}}">Next</a> | 
+                      <a href="#/{{group_type}}/page/{{pagination.last}}">Last</a>
+                    </li>
+                </ul>
+
             </span>
-            <span style="float: right">
-                <a href="#/{{group_type}}/page/{{pagination.next}}">Next</a> | 
-                <a href="#/{{group_type}}/page/{{pagination.last}}">Last</a>
-            </span>
+
+
+
             <ul class="tag-pictures">
                 <li ng-repeat="group in groups | filter:query | startFrom:current_page*pagination.per_page | limitTo:pagination.per_page">
                     <a href="#/{{group_type}}/{{group.name}}" title="{{group.name}}">

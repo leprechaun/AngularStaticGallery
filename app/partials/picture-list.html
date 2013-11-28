@@ -18,14 +18,25 @@
         <div class="span10">
             <!--Body content-->
             <h1>{{source.name}} - {{source.picture_count}} pictures ({{current_page+1}} / {{last_page+1}})</h1>
-              <span style="float: left;">
-                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.first">First</a> | 
-                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.previous}}">Previous</a>
-              </span>
-              <span style="float: right;">
-                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.next}}">Next</a> | 
-                <a href="#/{{picture_source}}/{{source.name}}/{{pagination.last}}">Last</a>
-              </span>
+            <span style="text-align: center;">
+                <ul style="width: 100%;">
+                    <li style="display: inline">
+                      <a href="#/{{picture_source}}/{{source.name}}/{{pagination.first">First</a> | 
+                      <a href="#/{{picture_source}}/{{source.name}}/{{pagination.previous}}">Previous</a> ...
+                    </li>
+                    <li style="display: inline;" ng-repeat="page in range(pagination.first,pagination.last, current_page)">
+                        <a style="padding: 5px 5px 5px 5px;"
+                            class="{{{true: 'current_page', false: ''}[page == current_page]}}"
+                            href="#/{{picture_source}}/{{source.name}}/{{page}}">{{page+1}}</a>
+                    </li>
+                    <li style="display: inline"> ... 
+                      <a href="#/{{picture_source}}/{{source.name}}/{{pagination.next}}">Next</a> | 
+                      <a href="#/{{picture_source}}/{{source.name}}/{{pagination.last}}">Last</a>
+                    </li>
+                </ul>
+
+            </span>
+
             <ul class="tag-pictures">
                 <li ng-repeat="picture in source.pictures | filter:query | startFrom:current_page*pagination.per_page | limitTo:items_per_page">
                     <a href="#/{{picture_source}}/{{source.name}}/picture/{{picture.id}}" title="{{picture.title}}">

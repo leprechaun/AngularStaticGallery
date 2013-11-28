@@ -1,5 +1,20 @@
 'use strict';
 
+function range(start, end, current){
+
+  var s = Math.max(0, current - 7);
+  var e = Math.min(end, current + 7);
+
+  console.log("pagination", s, e);
+
+  var range = [];
+  for( var i = s; i <= e; i++ ){
+    range.push(i);
+  }
+
+  return range;
+}
+
 function get_group_callback(group, $scope){
     group.sort(function(g1, g2){
         var g1n = g1.name.toLowerCase();
@@ -23,6 +38,8 @@ function get_group_callback(group, $scope){
     $scope.pagination.previous = Math.max(0, $scope.current_page-1);
     $scope.pagination.next = Math.min(last, $scope.current_page+1);
     $scope.pagination.last = last;
+
+    $scope.range = range;
 }
 
 function get_listing_callback(listing, $scope){
@@ -41,6 +58,8 @@ function get_listing_callback(listing, $scope){
     $scope.pagination.previous = Math.max(0, $scope.current_page-1);
     $scope.pagination.next = Math.min(last, $scope.current_page+1);
     $scope.pagination.last = last;
+
+    $scope.range = range;
 }
 
 /* EventList */

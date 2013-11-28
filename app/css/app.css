@@ -91,3 +91,8 @@ img.orientation-6 {
 .angular-google-map {
                 display: block;
         }
+
+a.current_page {
+  font-weight: bold;
+  color: black;
+}
