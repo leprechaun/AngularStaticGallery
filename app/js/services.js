@@ -44,13 +44,13 @@ var myModule = angular.module('galleryServices', ['ngResource']);
 myModule.factory('Gallery', function($resource){
         var Gallery = {
             tag: new ResourceCachingProxy($resource('data/tags/:tagId.json', {}, {
-                query: {method:'GET', 'params':{tagId:'all-tags'}, isArray:true}
+                query: {method:'GET', 'params':{tagId:'all-tags', _cache: data_refresh}, isArray:true}
             }), "get,query"),
             picture: new ResourceCachingProxy($resource('data/pictures/:pictureId.json', {}, {
-                query: {method:'GET', 'params':{}, isArray:false}
+                query: {method:'GET', 'params':{_cache: data_refresh}, isArray:false}
             }), "get,query"),
             'event': new ResourceCachingProxy($resource('data/events/:eventId.json', {}, {
-                query: {method:'GET', 'params':{eventId: 'all-events'}, isArray:true}
+                query: {method:'GET', 'params':{eventId: 'all-events', _cache: data_refresh}, isArray:true}
             }), "get,query")
         };
 
