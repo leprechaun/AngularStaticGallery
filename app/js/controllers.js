@@ -121,8 +121,13 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
   /* GET PICTURE + CALLBACK */
   $scope.picture = Gallery.picture.get({pictureId: $routeParams.pictureId}, function(picture){
 
+  $scope.orientation = "";
   if( 'exif' in picture )
   {
+    if('Image Orientation' in picture.exif){
+      $scope.orientation = "orientation-" + picture.exif['Image Orientation'];
+    }
+
     $scope.exif = picture.exif;
     if( 'GPS GPSLongitude' in $scope.exif )
     {

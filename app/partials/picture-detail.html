@@ -18,9 +18,9 @@
         <!--Body content-->
         <h1>{{picture.id}} - {{picture.datetime}}</h1>
         <p>{{picture.comment}}</p>
-        <a href="#/{{picture_source}}/{{source.name}}/picture/{{pp}}">Previous</a>
-        <a style="float: right" href="#/{{picture_source}}/{{source.name}}/picture/{{np}}">Next</a>
-        <img ng-src="{{pictures_base_path}}{{picture.path}}"></img>
+        <a style="float: left;" href="#/{{picture_source}}/{{source.name}}/picture/{{pp}}">Previous</a>
+        <a style="float: right;" href="#/{{picture_source}}/{{source.name}}/picture/{{np}}">Next</a>
+        <img class="{{orientation}}" ng-src="{{pictures_base_path}}{{picture.path}}"></img>
         <ul>
             <li ng-repeat="picture in picture_slice" style="display: inline;" >
                 <a href="#/{{picture_source}}/{{source.name}}/picture/{{picture.id}}">

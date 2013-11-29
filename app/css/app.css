@@ -85,7 +85,8 @@ h1 {
 }
 
 img.orientation-6 {
-    image-orientation: 90deg;
+  -webkit-transform: rotate(90deg);
+  margin:128px -128px;
 }
 
 .angular-google-map {
