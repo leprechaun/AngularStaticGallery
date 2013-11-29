@@ -189,6 +189,8 @@ function prep_picture_pagination(source, current_id, $scope){
     }
   }
 
+  $scope.start_previewing_at_index = Math.max(index, 0);
+
   try{
     $scope.pp = source.pictures[index - 1].id;
   }

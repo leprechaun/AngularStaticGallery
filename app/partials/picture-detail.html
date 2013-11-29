@@ -21,13 +21,6 @@
         <a style="float: left;" href="#/{{picture_source}}/{{source.name}}/picture/{{pp}}">Previous Picture</a>
         <a style="float: right;" href="#/{{picture_source}}/{{source.name}}/picture/{{np}}">Next Picture</a>
         <img class="{{orientation}}" ng-src="{{pictures_base_path}}{{picture.path}}"></img>
-        <ul>
-            <li ng-repeat="picture in picture_slice" style="display: inline;" >
-                <a href="#/{{picture_source}}/{{source.name}}/picture/{{picture.id}}">
-                    <img ng-src="{{thumbs_base_path}}{{picture.thumbnail}}">
-                </a>
-            </li>
-        </ul>
     </div>
 
     <div class="span2">
@@ -38,5 +31,14 @@
             </li>
         </ul>
         <google-map center="center" draggable="true" zoom="zoom" markers="markers" mark-click="true" style="height: 200px"></google-map>
+
+        <span class="picture-detail-group-thumbs-caption">Upcoming pictures</span>
+        <ul class="picture-detail-upcoming-list" style="margin-left: 0px;">
+          <li style="list-style: none; margin-top: 10px;" ng-repeat="thumbs in source.pictures | orderBy:'title' | startFrom:start_previewing_at_index-1 | limitTo:5">
+            <a class="{{{true: 'current-picture', false: ''}[ picture.id == thumbs.id]}}" href="#/{{picture_source}}/{{source.name}}/picture/{{thumbs.id}}">
+              <img title="{{thumbs.title}}" src="{{thumbs_base_path}}{{thumbs.thumbnail}}" />
+            </a>
+          </li>
+        </ul>
     </div>
 </div>
