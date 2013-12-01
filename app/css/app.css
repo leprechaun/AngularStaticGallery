@@ -84,10 +84,35 @@ h1 {
   border-bottom: 1px solid gray;
 }
 
-img.orientation-6 {
+img.orientation-1, img.orientation-2 {
+/*
+    No need for anything here. It's already correctly oriented
+*/
+}
+
+img.orientation-6, img.orientation-5 {
   -webkit-transform: rotate(90deg);
+  -moz-transform:rotate(90deg);
+  -o-transform:rotate(90deg);
+  -ms-transform:rotate(90deg);
   margin:128px -128px;
 }
+
+img.orientation-3, img.orientation-4 {
+  -webkit-transform: rotate(180deg);
+  -moz-transform:rotate(180deg);
+  -o-transform:rotate(180deg);
+  -ms-transform:rotate(180deg);
+}
+
+img.orientation-8, img.orientation-7 {
+  -webkit-transform: rotate(270deg);
+  -moz-transform:rotate(270deg);
+  -o-transform:rotate(270deg);
+  -ms-transform:rotate(270deg);
+  margin:128px -128px;
+}
+
 
 .angular-google-map {
                 display: block;
