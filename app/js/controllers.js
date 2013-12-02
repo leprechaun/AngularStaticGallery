@@ -1,11 +1,21 @@
 'use strict';
 
+function realign_image(image){
+  var cls = image.getAttribute('class');
+  if( ["orientation-6", "orientation-8"].indexOf(cls) >= 0 ){
+    var w = image.width;
+    var h = image.height;
+
+    var margin = (w - h) / 2;
+    image.setAttribute('style', "margin: " + margin + "px " + (-margin) + "px;")
+  }
+
+}
+
 function range(start, end, current){
 
   var s = Math.max(0, current - 7);
   var e = Math.min(end, current + 7);
-
-  console.log("pagination", s, e);
 
   var range = [];
   for( var i = s; i <= e; i++ ){
@@ -126,7 +136,11 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
   {
     if('Image Orientation' in picture.exif){
       $scope.orientation = "orientation-" + picture.exif['Image Orientation'];
+      if(picture.exif['Image Orientation'] == 6 || picture.exif['Image Orientation'] == 8){
+        var diff = picture.size.width - picture.size.height;
+      }
     }
+
 
     $scope.exif = picture.exif;
     if( 'GPS GPSLongitude' in $scope.exif )
@@ -154,7 +168,6 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
 
       $scope.center = {longitude: dec_long, latitude: dec_lat};
       $scope.markers = [{longitude: dec_long, latitude: dec_lat}];
-      $scope.$watch('center', function(){console.log(arguments);});
     }
   }
   });

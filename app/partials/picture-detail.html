@@ -20,7 +20,7 @@
         <p>{{picture.comment}}</p>
         <a style="float: left;" href="#/{{picture_source}}/{{source.name}}/picture/{{pp}}">Previous Picture</a>
         <a style="float: right;" href="#/{{picture_source}}/{{source.name}}/picture/{{np}}">Next Picture</a>
-        <img class="{{orientation}}" ng-src="{{pictures_base_path}}{{picture.path}}"></img>
+        <img onload="realign_image(this);" class="{{orientation}}" ng-src="{{pictures_base_path}}{{picture.path}}"></img>
     </div>
 
     <div class="span2">
