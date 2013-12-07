@@ -4,7 +4,7 @@ var tags = null;
 var tags_hash = {};
 
 /* App Module */
-angular.module('gallery', ['galleryFilters', 'galleryServices', 'google-maps']).
+angular.module('gallery', ['galleryFilters', 'galleryServices', 'google-maps', 'ngRoute']).
     config(['$routeProvider', function($routeProvider){
         $routeProvider.
 
