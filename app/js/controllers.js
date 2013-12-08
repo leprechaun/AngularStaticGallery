@@ -119,6 +119,31 @@ function TagListCtrl($scope, $routeParams, Gallery){
   $scope.thumbs_base_path = thumbs_base_path;
 }
 
+function extractCoordinates(exif){
+  var longitude = [];
+  var latitude = [];
+  for( var i = 0; i < 3; i++ )
+  {
+    longitude[i] = exif['GPS GPSLongitude'][i][0] / exif['GPS GPSLongitude'][i][1];
+    latitude[i] = exif['GPS GPSLatitude'][i][0] / exif['GPS GPSLatitude'][i][1];
+  }
+
+  var dec_long = longitude[0] + (longitude[1]/60.) + (longitude[2]/3600.);
+  var dec_lat = latitude[0] + (latitude[1]/60.) + (latitude[2]/3600.);
+
+  if( exif['GPS GPSLongitudeRef'] == "W" )
+  {
+    dec_long= - dec_long;
+  }
+
+  if( exif['GPS GPSLatitudeRef'] == "S")
+  {
+    dec_lat= - dec_lat;
+  }
+
+  return {longitude: dec_long, latitude: dec_lat};
+}
+
 /* PictureDetail */
 function PictureDetailCtrl($scope, $routeParams, Gallery) {
   /* SET SOME DEFAULTS */
@@ -141,33 +166,12 @@ function PictureDetailCtrl($scope, $routeParams, Gallery) {
       }
     }
 
-
     $scope.exif = picture.exif;
     if( 'GPS GPSLongitude' in $scope.exif )
     {
-      var longitude = [];
-      var latitude = [];
-      for( var i = 0; i < 3; i++ )
-      {
-        longitude[i] = $scope.exif['GPS GPSLongitude'][i][0] / $scope.exif['GPS GPSLongitude'][i][1];
-        latitude[i] = $scope.exif['GPS GPSLatitude'][i][0] / $scope.exif['GPS GPSLatitude'][i][1];
-      }
-
-      var dec_long = longitude[0] + (longitude[1]/60.) + (longitude[2]/3600.);
-      var dec_lat = latitude[0] + (latitude[1]/60.) + (latitude[2]/3600.);
-
-      if( $scope.exif['GPS GPSLongitudeRef'] == "W" )
-      {
-        dec_long= - dec_long;
-      }
-
-      if( $scope.exif['GPS GPSLatitudeREf'] == "S")
-      {
-        dec_lat= - dec_lat;
-      }
-
-      $scope.center = {longitude: dec_long, latitude: dec_lat};
-      $scope.markers = [{longitude: dec_long, latitude: dec_lat}];
+      var coord = extractCoordinates($scope.exif);
+      $scope.center = {longitude: coord.longitude, latitude: coord.latitude};
+      $scope.markers = [{longitude: coord.longitude, latitude: coord.latitude}];
     }
   }
   });
