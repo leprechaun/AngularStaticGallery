@@ -6,7 +6,7 @@
             Sort by:
             <select ng-model="orderProp">
                 <option value="name">Alphabetical</option>
-                <option value="-picture_count">Count</option>
+                <option value="-picture_count">Picture count</option>
             </select>
             <ul class="tag-list">
                 <li ng-repeat="tag in tags | filter:query | orderBy:orderProp">
