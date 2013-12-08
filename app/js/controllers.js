@@ -284,6 +284,8 @@ function MapViewCtrl($scope, $routeParams, Gallery){
 
   $scope.tags = Gallery.tag.query();
   $scope.source = Gallery[parent_controller].get(args, function(listing){ map_view_callback(listing, Gallery, $scope);});
+  $scope.center = {longitude: 0, latitude: 0};
+  $scope.zoom = 2;
 }
 
 function map_view_callback(listing, Gallery, $scope){
@@ -292,6 +294,7 @@ function map_view_callback(listing, Gallery, $scope){
       if( 'exif' in pic ){
         if( 'GPS GPSLongitude' in pic.exif){
           var coords = extractCoordinates(pic.exif);
+          coords.infoWindow = "Hello: " + pic.id;
           $scope.markers.push(coords);
         }
       }

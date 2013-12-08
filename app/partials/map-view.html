@@ -20,7 +20,7 @@
         <div class="span10">
             <!--Body content-->
             <h1>{{picture_source}} "{{source.name}}" - {{source.picture_count}} pictures</h1>
-            <!--<google-map center="center" draggable="true" zoom="zoom" markers="markers" mark-click="true" style="height: 100%; width: 100%;"></google-map>-->
+            <google-map center="center" draggable="true" zoom="zoom" markers="markers" fit="true" style="height: 400px; width: 100%;"></google-map>
         <ul>
           <li ng-repeat="marker in markers">{{marker}}</li>
         </ul>
