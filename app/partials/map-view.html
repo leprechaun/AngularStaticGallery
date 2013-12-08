@@ -1,0 +1,30 @@
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            Search: <input ng-model="query">
+            Sort by:
+            <select ng-model="orderProp">
+                <option value="name">Alphabetical</option>
+                <option value="-picture_count">Picture count</option>
+            </select>
+
+            <ul class="tag-list">
+                <li ng-repeat="tag in tags | filter:query | orderBy:orderProp">
+                    <a href="#/tag/{{tag.name}}">{{tag.name}} ({{tag.picture_count}})</a>
+                </li>
+            </ul>
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            <h1>{{picture_source}} "{{source.name}}" - {{source.picture_count}} pictures</h1>
+            <!--<google-map center="center" draggable="true" zoom="zoom" markers="markers" mark-click="true" style="height: 100%; width: 100%;"></google-map>-->
+        <ul>
+          <li ng-repeat="marker in markers">{{marker}}</li>
+        </ul>
+
+        </div>
+    </div>
+</div>

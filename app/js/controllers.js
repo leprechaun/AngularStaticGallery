@@ -263,3 +263,38 @@ function EventDetailCtrl($scope, $routeParams, Gallery) {
   /* GET TAG + CALLBACK */
   Gallery.event.get({eventId: $routeParams.eventId}, function(event){get_listing_callback(event, $scope)});
 }
+
+/* MapView */
+function MapViewCtrl($scope, $routeParams, Gallery){
+  var parent_controller = "picture";
+  if( "eventId" in $routeParams )
+  {
+    parent_controller = "event";
+    var parent_id = $routeParams.eventId;
+    var args = {eventId: parent_id};
+  }
+  else if( "tagId" in $routeParams )
+  {
+    parent_controller = "tag";
+    var parent_id = $routeParams.tagId;
+    var args = {tagId: parent_id};
+  }
+
+  $scope.markers = [];
+
+  $scope.tags = Gallery.tag.query();
+  $scope.source = Gallery[parent_controller].get(args, function(listing){ map_view_callback(listing, Gallery, $scope);});
+}
+
+function map_view_callback(listing, Gallery, $scope){
+  for(var pid in listing.pictures){
+    var p = Gallery.picture.get({pictureId: listing.pictures[pid].id}, function(pic){
+      if( 'exif' in pic ){
+        if( 'GPS GPSLongitude' in pic.exif){
+          var coords = extractCoordinates(pic.exif);
+          $scope.markers.push(coords);
+        }
+      }
+    });
+  }
+}
