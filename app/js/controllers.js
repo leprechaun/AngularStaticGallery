@@ -280,7 +280,9 @@ function MapViewCtrl($scope, $routeParams, Gallery){
     var args = {tagId: parent_id};
   }
 
+  $scope.orderProp = "name";
   $scope.markers = [];
+  $scope.picture_source = parent_controller;
 
   $scope.tags = Gallery.tag.query();
   $scope.source = Gallery[parent_controller].get(args, function(listing){ map_view_callback(listing, Gallery, $scope);});
@@ -294,7 +296,7 @@ function map_view_callback(listing, Gallery, $scope){
       if( 'exif' in pic ){
         if( 'GPS GPSLongitude' in pic.exif){
           var coords = extractCoordinates(pic.exif);
-          coords.infoWindow = "Hello: " + pic.id;
+          coords.infoWindow = "<a target=\"_blank\" href=\"#/" + $scope.picture_source + "/" + $scope.source.name + "/picture/" + pic.id + "\">Picture " + pic.id + "<br /><img src=\"" + thumbs_base_path + "/" + pic.thumbnail + "\"/></a>";
           $scope.markers.push(coords);
         }
       }
